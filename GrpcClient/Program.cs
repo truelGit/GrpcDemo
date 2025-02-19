@@ -7,14 +7,12 @@ namespace GrpcClient
 	{
 		static async Task Main(string[] args)
 		{
-			var input = new HelloRequest { Name = "Alex" };
-
 			var channel = GrpcChannel.ForAddress("https://localhost:7071");
-			var client = new Greeter.GreeterClient(channel);
+			var customerClient = new Customer.CustomerClient(channel);
 
-			var reply = await client.SayHelloAsync(input);
+			var customer = await customerClient.GetCustomerInfoAsync(new CustomerLookupModel { UserId = 1 });
 
-			Console.WriteLine(reply.Message);
+			Console.WriteLine($"{customer.FirstName} {customer.LastName}");
 
 			Console.ReadLine();
 		}
